@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] memos = {"New Entry +", "Starbucks", "Boardwalk", "Café"};
+        String[] memos = {"New Entry +"};
         ListAdapter memoAdapter;
         memoAdapter = new CustomAdapter(this, memos);
         ListView memoListView = (ListView) findViewById(R.id.MemoList);
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
 
     }
