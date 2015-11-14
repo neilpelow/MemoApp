@@ -47,7 +47,29 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void deleteMemo(String memoname) {
 
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_MEMOS + " WHERE " + COLUMN_MEMONAME + "=\"" + memoname + "\";" );
+        db.execSQL("DELETE FROM " + TABLE_MEMOS + " WHERE " + COLUMN_MEMONAME + "=\"" + memoname + "\";");
+    }
+
+    //print out the db as a string
+    public String databasetoString(){
+        String dbString = "";
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_MEMOS + " WHERE 1";
+
+        //cursor point to a location in results
+        Cursor c = db.rawQuery(query, null);
+        //Move to the first row in results
+        c.moveToFirst();
+
+        while(!c.isAfterLast()) {
+            if(c.getString(c.getColumnIndex("memoname")) != null) {
+                dbString += c.getString(c.getColumnIndex("memoname"));
+                dbString += "\n";
+            }
+        }
+        db.close();
+        return dbString;
+
     }
 
 }
