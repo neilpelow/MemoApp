@@ -33,12 +33,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + );
+        db.execSQL("DROP TABLE IF EXISTS" + TABLE_MEMOS);
     }
 
-    public void addMemo(Memo memo) {
+    public void addMemo(Memos memos) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_MEMONAME, memo.get_memoname());
+        values.put(COLUMN_MEMONAME, memos.get_memoname());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_MEMOS, null, values);
         db.close();

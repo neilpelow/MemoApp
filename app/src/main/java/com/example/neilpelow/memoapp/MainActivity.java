@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,11 +20,16 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private Uri fileUri;
 
+    EditText memoInput;
+    TextView textView2;
+    MyDBHandler dbHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //------------------------------------Photo input---------------------------------------------------------//
         String[] memos = {"New Entry +"};
         ListAdapter memoAdapter;
         memoAdapter = new CustomAdapter(this, memos);
@@ -50,7 +57,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //-----------------------------------------------Database input/output------------------------------------------//
+        memoInput = (EditText) findViewById(R.id.memoInput);
+        textView2 = (TextView) findViewById(R.id.textView2);
+        dbHandler = new MyDBHandler(this, null, null, 1);
+        printDatabase();
+    }
 
+    //Add a memo to the database
+    public void addButtonClicked(View view) {
+        Memos memo = new Memos(memoInput.getText().toString());
+        dbHandler.addMemo(memo);
+        printDatabase();
+    }
+
+    //Delete memo
+    public void deleteButtonClicked(View view) {
+        String inputText = memoInput.getText().toString();
+        dbHandler.deleteMemo(inputText);
+        printDatabase();
+
+    }
+
+    public void printDatabase(){
+        String dbString = dbHandler.databasetoString();
+        textView2.setText(dbString);
+        memoInput.setText("");
     }
 
 
