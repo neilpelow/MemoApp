@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MemoApp</string>
     <string testvar="test">Testing</string>
+    <string name="addButton">Add</string>
+    <string delete="deleteButton">Delete</string>
+    <string name="nextButton">Next</string>
+    <string name="cancelButton">Cancel</string>
 </resources>

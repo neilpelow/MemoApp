@@ -19,27 +19,38 @@ import android.widget.Toast;
 
 import com.example.neilpelow.memoapp.R;
 
-class CustomAdapter extends ArrayAdapter<String> {
+class CustomAdapter extends ArrayAdapter<Memos> {
 
-    public CustomAdapter (Context context, String[] memos) {
-        super(context, R.layout.custom_row, memos);
+    public CustomAdapter (Context context) {
+        super(context, R.layout.custom_row);
     }
+
+    @Override
+    public void add(Memos object) {
+        super.add(object);
+    }
+
+    @Override
+    public Memos getItem(int position) {
+        return super.getItem(position);
+    }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater memoInflater = LayoutInflater.from(getContext());
-
         View customView = convertView;
         if (customView == null) {
             customView = memoInflater.inflate(R.layout.custom_row, null);
         }
 
-        String singleMemoItem = getItem(position);
+        Memos memos = getItem(position);
+        //String singleMemoItem = getItem(position);
         TextView memoText = (TextView) customView.findViewById(R.id.memoText);
         ImageView memoImage = (ImageView) customView.findViewById(R.id.placeholderImage);
 
-        memoText.setText(singleMemoItem);
+        memoText.setText(memos.get_memoname());
         memoImage.setImageResource(R.drawable.ic_launcher);
         return customView;
 

@@ -1,40 +1,56 @@
 package com.example.neilpelow.memoapp;
 
-/**
- * Created by neilpelow on 14/11/15.
- */
-public class Memos {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Memos implements Parcelable {
 
     private int _id;
     private String _memoname;
 
     public Memos() {
-
     }
 
 
-    public Memos(String memoname) {
-        this._memoname = memoname;
+    public int get_id() {
+        return _id;
     }
 
-    public void set_id(int _id){
+    public void set_id(int _id) {
         this._id = _id;
+    }
 
+    public String get_memoname() {
+        return _memoname;
     }
 
     public void set_memoname(String _memoname) {
         this._memoname = _memoname;
     }
 
-    public int get_id(){
-        return _id;
-
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public String get_memoname(){
-        return _memoname;
-
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this._id);
+        dest.writeString(this._memoname);
     }
 
+    protected Memos(Parcel in) {
+        this._id = in.readInt();
+        this._memoname = in.readString();
+    }
 
+    public static final Parcelable.Creator<Memos> CREATOR = new Parcelable.Creator<Memos>() {
+        public Memos createFromParcel(Parcel source) {
+            return new Memos(source);
+        }
+
+        public Memos[] newArray(int size) {
+            return new Memos[size];
+        }
+    };
 }

@@ -7,9 +7,6 @@ import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentValues;
 
-/**
- * Created by neilpelow on 13/11/15.
- */
 public class MyDBHandler extends SQLiteOpenHelper{
 
     private static final int DATABASE_VERSION = 1;
@@ -25,8 +22,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE" + TABLE_MEMOS + "(" +
-                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT " +
-                COLUMN_MEMONAME + " TEXT " + //text for now
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT, " +
+                COLUMN_MEMONAME + " TEXT, " + //text for now
                 ");";
         db.execSQL(query);
     }
@@ -60,6 +57,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Cursor c = db.rawQuery(query, null);
         //Move to the first row in results
         c.moveToFirst();
+        c.close();
 
         while(!c.isAfterLast()) {
             if(c.getString(c.getColumnIndex("memoname")) != null) {
