@@ -6,7 +6,7 @@ import android.os.Parcelable;
 public class Memos implements Parcelable {
 
     private int _id;
-    private String _memoname;
+    private String _memobody;
 
     public Memos() {
     }
@@ -20,12 +20,12 @@ public class Memos implements Parcelable {
         this._id = _id;
     }
 
-    public String get_memoname() {
-        return _memoname;
+    public String get_memobody() {
+        return _memobody;
     }
 
-    public void set_memoname(String _memoname) {
-        this._memoname = _memoname;
+    public void set_memobody(String _memoname) {
+        this._memobody = _memoname;
     }
 
     @Override
@@ -36,12 +36,12 @@ public class Memos implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this._id);
-        dest.writeString(this._memoname);
+        dest.writeString(this._memobody);
     }
 
     protected Memos(Parcel in) {
         this._id = in.readInt();
-        this._memoname = in.readString();
+        this._memobody = in.readString();
     }
 
     public static final Parcelable.Creator<Memos> CREATOR = new Parcelable.Creator<Memos>() {

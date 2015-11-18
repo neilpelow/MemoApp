@@ -32,8 +32,10 @@ public class AddMemoActivity extends AppCompatActivity {
 
         if(bundle.getParcelable("memoID") != null) {
             newMemo = bundle.getParcelable("memoID");
-            MyInputText.setText(newMemo.get_memoname());
+            MyInputText.setText(newMemo.get_memobody());
+            //reset buttons to reflect change in memo state; update and delete.
             MyAddButton.setText("Update");
+            MyCancelButton.setText("Delete");
         }
 
         final int value = bundle.getInt("newID");
@@ -49,12 +51,12 @@ public class AddMemoActivity extends AppCompatActivity {
 
                     if (MyAddButton.getText().equals("Add")) {
                         Memos sendMemo = new Memos();
-                        sendMemo.set_memoname(MyInputText.getText().toString());
+                        sendMemo.set_memobody(MyInputText.getText().toString());
                         sendMemo.set_id(value);
-                        Intent intent1 = new Intent();
-                        intent1.putExtra("memo", sendMemo);
-                        intent1.putExtra("action", "add");
-                        setResult(RESULT_OK, intent1);
+                        Intent intentAdd = new Intent();
+                        intentAdd.putExtra("memo", sendMemo);
+                        intentAdd.putExtra("action", "add");
+                        setResult(RESULT_OK, intentAdd);
                         finish();
                     } else {
                         returnData();
@@ -67,13 +69,19 @@ public class AddMemoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Do NOT create new memo. Return to list view.
+                if(MyInputText == null){
                 finish();
+                } else {
+                    finish();
+                }
+
             }
         });
     }
 
+
     public void returnData() {
-        newMemo.set_memoname(MyInputText.getText().toString());
+        newMemo.set_memobody(MyInputText.getText().toString());
         Intent intent = new Intent();
         intent.putExtra("memo", newMemo);
         intent.putExtra("action", "update");

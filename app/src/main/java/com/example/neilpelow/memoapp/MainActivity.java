@@ -2,17 +2,12 @@ package com.example.neilpelow.memoapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Memos newMemo = new Memos();
-        newMemo.set_memoname("Add Memo");
+        newMemo.set_memobody("Add Memo");
         memoAdapter = new CustomAdapter(this);
         memoAdapter.add(newMemo);
 
@@ -61,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        //this is coming back from memo adding
+        //this is returned from memo adding
         if(requestCode == MEMO_RETURN && resultCode == Activity.RESULT_OK) {
 
             String value = data.getStringExtra("action");
@@ -77,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
                     Memos getMemo = memoAdapter.getItem(i);
 
                     if(getMemo.get_id() == memos.get_id()) {
-                        getMemo.set_memoname(memos.get_memoname());
-                        Toast.makeText(this, memos.get_memoname(),Toast.LENGTH_SHORT).show();
+                        getMemo.set_memobody(memos.get_memobody());
+                        //Shows that the update has fired.
+                        Toast.makeText(this, memos.get_memobody(),Toast.LENGTH_SHORT).show();
                         memoAdapter.notifyDataSetChanged();
                     }
                 }
