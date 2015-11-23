@@ -1,8 +1,16 @@
 <resources>
+
     <string name="app_name">MemoApp</string>
     <string testvar="test">Testing</string>
     <string name="addButton">Add</string>
     <string delete="deleteButton">Delete</string>
     <string name="nextButton">Next</string>
     <string name="cancelButton">Cancel</string>
+    <string name="locationButton">Location</string>
+    <string name="no_address_found">No address found!</string>
+    <string name="invalid_lat_long_used">Invalid coordinates</string>
+    <string name="location_placeholder">Getting location...</string>
+    <string name="address_placeholder">Getting address...</string>
+    <string name="cameraButton">Camera</string>
+
 </resources>

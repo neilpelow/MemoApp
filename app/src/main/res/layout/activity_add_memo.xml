@@ -31,4 +31,20 @@
         android:id="@+id/cancelbutton"
         android:layout_alignTop="@+id/addbutton"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/locationButton"
+        android:id="@+id/myLocationButton"
+        android:layout_below="@+id/addbutton"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cameraButton"
+        android:id="@+id/cameraButton"
+        android:layout_below="@+id/cancelbutton"
+        android:layout_alignEnd="@+id/cancelbutton" />
 </RelativeLayout>
