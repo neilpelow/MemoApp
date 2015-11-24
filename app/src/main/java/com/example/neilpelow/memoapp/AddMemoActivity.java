@@ -1,8 +1,10 @@
 package com.example.neilpelow.memoapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,8 +16,12 @@ public class AddMemoActivity extends AppCompatActivity {
   Button MyAddButton;
   Button MyCancelButton;
   Button myLocationButton;
+  Button myCameraButton;
   EditText MyInputText;
   Memos newMemo;
+
+  private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+  private Uri fileUri;
 
 
   @Override
@@ -28,6 +34,7 @@ public class AddMemoActivity extends AppCompatActivity {
     MyAddButton = (Button) findViewById(R.id.addbutton);
     MyCancelButton = (Button) findViewById(R.id.cancelbutton);
     myLocationButton = (Button) findViewById(R.id.myLocationButton);
+    myCameraButton = (Button) findViewById(R.id.myCameraButton);
     MyInputText = (EditText) findViewById(R.id.memoInput);
 
     //if MainActivity has sent data
@@ -91,6 +98,15 @@ public class AddMemoActivity extends AppCompatActivity {
         //Change to location and address view.
         Intent locationIntent = new Intent(AddMemoActivity.this, LocationLoc.class);
         startActivity(locationIntent);
+      }
+    });
+
+    myCameraButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
       }
     });
 
