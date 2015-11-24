@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
       if (value.equals("add")) {
         memoAdapter.add(memos);
         memoAdapter.notifyDataSetChanged();
-      } else {
+      }  else  if (value.equals("update")) {
 
         for (int i = 1; i < memoAdapter.getCount(); i++) {
 
@@ -92,6 +92,17 @@ public class MainActivity extends AppCompatActivity {
             memoAdapter.notifyDataSetChanged();
           }
         }
+      } else if (value.equals("delete")) {
+
+        for (int i = 1; i < memoAdapter.getCount(); i++) {
+
+          Memos getMemo = memoAdapter.getItem(i);
+
+            if (getMemo.get_id() == memos.get_id()) {
+                memoAdapter.remove(memoAdapter.getItem(i));
+                memoAdapter.notifyDataSetChanged();
+            }
+          }
       }
     }
   }

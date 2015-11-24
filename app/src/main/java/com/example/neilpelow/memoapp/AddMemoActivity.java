@@ -84,10 +84,21 @@ public class AddMemoActivity extends AppCompatActivity {
         //Do NOT create new memo. Return to list view.
         if (MyInputText == null) {
           finish();
+        }
+        //if a memo already exists button will change to Delete
+        if (MyCancelButton.getText().equals("Delete")) {
+
+          Intent intent = new Intent();
+          intent.putExtra("memo", newMemo);
+          intent.putExtra("action", "delete");
+          setResult(RESULT_OK, intent);
+          finish();
+
+
+          Toast.makeText(AddMemoActivity.this, "Delete button", Toast.LENGTH_SHORT).show();
         } else {
           finish();
         }
-
       }
     });
 

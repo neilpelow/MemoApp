@@ -21,8 +21,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/addbutton"
         android:text="@string/addButton"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/memoInput"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp"/>
 
     <Button
         android:layout_width="wrap_content"

@@ -13,7 +13,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "memofiles.db";
     private static final String TABLE_MEMOS = "memos";
     private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_MEMONAME = "memoname";
+    private static final String COLUMN_MEMOBODY = "memobody";
 
     public MyDBHandler (Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -23,7 +23,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE" + TABLE_MEMOS + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTO_INCREMENT, " +
-                COLUMN_MEMONAME + " TEXT, " + //text for now
+            COLUMN_MEMOBODY + " TEXT, " + //text for now
                 ");";
         db.execSQL(query);
     }
@@ -35,20 +35,20 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public void addMemo(Memos memos) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_MEMONAME, memos.get_memobody());
+        values.put(COLUMN_MEMOBODY, memos.get_memobody());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_MEMOS, null, values);
         db.close();
     }
 
-    public void deleteMemo(String memoname) {
+    public void deleteMemo(String memobody) {
 
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_MEMOS + " WHERE " + COLUMN_MEMONAME + "=\"" + memoname + "\";");
+        db.execSQL("DELETE FROM " + TABLE_MEMOS + " WHERE " + COLUMN_MEMOBODY + "=\"" + memobody + "\";");
     }
 
     //print out the db as a string
-    public String databasetoString(){
+    public String databasetoString() {
         String dbString = "";
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_MEMOS + " WHERE 1";
@@ -60,8 +60,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         c.close();
 
         while(!c.isAfterLast()) {
-            if(c.getString(c.getColumnIndex("memoname")) != null) {
-                dbString += c.getString(c.getColumnIndex("memoname"));
+            if(c.getString(c.getColumnIndex("memobody")) != null) {
+                dbString += c.getString(c.getColumnIndex("memobody"));
                 dbString += "\n";
             }
         }
@@ -70,4 +70,4 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     }
 
-}
+}//end MyDBHandler
