@@ -13,5 +13,6 @@
     <string name="address_placeholder">Getting address...</string>
     <string name="myCameraButton">Camera</string>
     <string name="title_activity_camera_call">CameraCall</string>
+    <string name="title_activity_view_memo">ViewMemoActivity</string>
 
 </resources>

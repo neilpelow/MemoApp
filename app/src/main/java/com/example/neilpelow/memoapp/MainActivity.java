@@ -49,22 +49,28 @@ public class MainActivity extends AppCompatActivity {
         // TODO:add image capture intent
         Log.d("test", "This works!");
 
-        Intent intent = new Intent(MainActivity.this, AddMemoActivity.class);
-        //user picked a memo
+        //Intent intent = new Intent(MainActivity.this, AddMemoActivity.class);
+        //Memos memos = new Memos();
+
         if (position > 0) {
           Memos memos = memoAdapter.getItem(position);
-          intent.putExtra("memoID", memos);
-          startActivityForResult(intent, MEMO_RETURN);
+          //intent.putExtra("memoID", memos);
+          //startActivityForResult(intent, MEMO_RETURN);
         } else {
-          intent.putExtra("newID", memoAdapter.getCount());
-          //new memo
-          startActivityForResult(intent, MEMO_RETURN);
+          addNewMemo();
         }
 
       }
 
     });
 
+  }
+
+  private void addNewMemo() {
+    Intent intent = new Intent(this, AddMemoActivity.class);
+    Memos memo = new Memos();
+    intent.putExtra("memo", memo);
+    startActivity(intent);
   }
 
   @Override

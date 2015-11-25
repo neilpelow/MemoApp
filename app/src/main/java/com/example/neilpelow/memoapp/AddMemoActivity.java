@@ -20,6 +20,9 @@ public class AddMemoActivity extends AppCompatActivity {
   EditText MyInputText;
   Memos newMemo;
 
+  MyDBHandler myDBHandler;
+
+
   private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
   private Uri fileUri;
 
@@ -30,6 +33,9 @@ public class AddMemoActivity extends AppCompatActivity {
     setContentView(R.layout.activity_add_memo);
     Log.w("AddMemoActivity", "Launching");
 
+    myDBHandler = new MyDBHandler(AddMemoActivity.this);
+    myDBHandler.open();
+
 
     MyAddButton = (Button) findViewById(R.id.addbutton);
     MyCancelButton = (Button) findViewById(R.id.cancelbutton);
@@ -39,20 +45,18 @@ public class AddMemoActivity extends AppCompatActivity {
 
     //if MainActivity has sent data
 
-    Bundle bundle = getIntent().getExtras();
+    Intent intent = getIntent();
+    newMemo = intent.getParcelableExtra("memo");
+    MyInputText.setText(newMemo.get_memobody());
+    //reset buttons to reflect change in memo state; update and delete.
+    MyAddButton.setText("Update");
+    MyCancelButton.setText("Delete");
 
-    if (bundle.getParcelable("memoID") != null) {
-      newMemo = bundle.getParcelable("memoID");
-      MyInputText.setText(newMemo.get_memobody());
-      //reset buttons to reflect change in memo state; update and delete.
-      MyAddButton.setText("Update");
-      MyCancelButton.setText("Delete");
-    }
 
-    Log.w("AddMemoActivity", "Launching 2");
-
-    final int value = bundle.getInt("newID");
-    Toast.makeText(AddMemoActivity.this, "ID: " + value, Toast.LENGTH_SHORT).show();
+    Log.d("AddMemoActivity", "Launching 2");
+    final int value = 1;
+    //final int value = bundle.getInt("newID");
+    //Toast.makeText(AddMemoActivity.this, "ID: " + value, Toast.LENGTH_SHORT).show();
 
     MyAddButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -60,27 +64,25 @@ public class AddMemoActivity extends AppCompatActivity {
         //Create new memo. Add to list view.
         if (MyInputText.getText().length() == 0) {
           Toast.makeText(AddMemoActivity.this, "Please enter data", Toast.LENGTH_SHORT).show();
-        } else {
-
-          if (MyAddButton.getText().equals("Add")) {
-            Memos sendMemo = new Memos();
-            sendMemo.set_memobody(MyInputText.getText().toString());
-            sendMemo.set_id(value);
-            Intent intentAdd = new Intent();
-            intentAdd.putExtra("memo", sendMemo);
-            intentAdd.putExtra("action", "add");
-            setResult(RESULT_OK, intentAdd);
-            finish();
-          } else {
-            returnData();
-          }
+        }
+        else {
+          Memos sendMemo = new Memos();
+          sendMemo.set_memobody(MyInputText.getText().toString());
+          sendMemo.set_id(value);
+          Intent intentAdd = new Intent();
+          intentAdd.putExtra("memo", sendMemo);
+          intentAdd.putExtra("action", "add");
+          setResult(RESULT_OK, intentAdd);
+          returnData();
         }
       }
     });
 
-    MyCancelButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+      MyCancelButton.setOnClickListener(new View.OnClickListener()
+
+      {
+        @Override
+        public void onClick (View v){
         //Do NOT create new memo. Return to list view.
         if (MyInputText == null) {
           finish();
@@ -100,34 +102,50 @@ public class AddMemoActivity extends AppCompatActivity {
           finish();
         }
       }
-    });
+      }
 
-    myLocationButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+      );
+
+      myLocationButton.setOnClickListener(new View.OnClickListener()
+
+      {
+        @Override
+        public void onClick (View v){
         Log.w("AddMemoActivity", "Launching 3");
         //Change to location and address view.
         Intent locationIntent = new Intent(AddMemoActivity.this, LocationLoc.class);
         startActivity(locationIntent);
       }
-    });
+      }
 
-    myCameraButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+      );
+
+      myCameraButton.setOnClickListener(new View.OnClickListener()
+
+      {
+        @Override
+        public void onClick (View v){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
       }
-    });
+      }
 
-  }//end onCreate
+      );
+
+    }//end onCreate
 
   public void returnData() {
-    newMemo.set_memobody(MyInputText.getText().toString());
+    String stringForInput = MyInputText.getText().toString();
+    Log.d("SF", stringForInput);
+    newMemo.set_memobody(stringForInput);
+
     Intent intent = new Intent();
     intent.putExtra("memo", newMemo);
     intent.putExtra("action", "update");
+
+    myDBHandler.addMemo(newMemo);
+
     setResult(RESULT_OK, intent);
     finish();
   }

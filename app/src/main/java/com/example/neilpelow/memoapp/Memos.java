@@ -24,8 +24,8 @@ public class Memos implements Parcelable {
         return _memobody;
     }
 
-    public void set_memobody(String _memoname) {
-        this._memobody = _memoname;
+    public void set_memobody(String _memobody) {
+        this._memobody = _memobody;
     }
 
     @Override
