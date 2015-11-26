@@ -10,37 +10,29 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
   private static final int MEMO_RETURN = 1;
   CustomAdapter memoAdapter;
+  MyDBHandler myDBHandler;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-//    Button locationButton;
+    myDBHandler = new MyDBHandler(MainActivity.this);
+
     Memos newMemo = new Memos();
     newMemo.set_memobody("Add Memo");
     memoAdapter = new CustomAdapter(this);
     memoAdapter.add(newMemo);
 
-//    locationButton = (Button) findViewById(R.id.locationButton);
-//
-//    //
-//    locationButton.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View v) {
-//        //Change to location and address view.
-//        Intent myintent = new Intent(MainActivity.this, LocationLoc.class);
-//        startActivity(myintent);
-//      }
-//    });
-
     final ListView memoListView = (ListView) findViewById(R.id.MemoList);
     memoListView.setAdapter(memoAdapter);
-
+    populateListView();
 
     memoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -48,29 +40,38 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO:add image capture intent
         Log.d("test", "This works!");
-
-        //Intent intent = new Intent(MainActivity.this, AddMemoActivity.class);
-        //Memos memos = new Memos();
-
         if (position > 0) {
+          Intent intent = new Intent(MainActivity.this, AddMemoActivity.class);
           Memos memos = memoAdapter.getItem(position);
-          //intent.putExtra("memoID", memos);
-          //startActivityForResult(intent, MEMO_RETURN);
+          intent.putExtra("action", "update");
+          intent.putExtra("memoID", memos);
+          startActivityForResult(intent, MEMO_RETURN);
         } else {
           addNewMemo();
         }
-
       }
 
     });
+  }
+
+  private void populateListView() {
+    Log.d("NP", "Gets to here anyway...");
+
+    List<Memos> memosList = myDBHandler.getAllMemos();
+
+    for (int i = 0; i < memosList.size(); i++) {
+      memoAdapter.add(memosList.get(i));
+    }
+
+    //Display memos in list view.
 
   }
 
   private void addNewMemo() {
     Intent intent = new Intent(this, AddMemoActivity.class);
-    Memos memo = new Memos();
-    intent.putExtra("memo", memo);
-    startActivity(intent);
+    intent.putExtra("newID", memoAdapter.getCount() - 1);
+    intent.putExtra("action", "add");
+    startActivityForResult(intent, MEMO_RETURN);
   }
 
   @Override
@@ -83,15 +84,18 @@ public class MainActivity extends AppCompatActivity {
       Memos memos = data.getParcelableExtra("memo");
 
       if (value.equals("add")) {
+        Log.w("action", "add");
         memoAdapter.add(memos);
         memoAdapter.notifyDataSetChanged();
-      }  else  if (value.equals("update")) {
-
+        myDBHandler.addMemo(memos);
+      } else if (value.equals("update")) {
+        Log.w("action", "update");
         for (int i = 1; i < memoAdapter.getCount(); i++) {
 
           Memos getMemo = memoAdapter.getItem(i);
 
           if (getMemo.get_id() == memos.get_id()) {
+            myDBHandler.updateMemo(memos);
             getMemo.set_memobody(memos.get_memobody());
             //Shows that the update has fired.
             Toast.makeText(this, memos.get_memobody(), Toast.LENGTH_SHORT).show();
@@ -99,17 +103,17 @@ public class MainActivity extends AppCompatActivity {
           }
         }
       } else if (value.equals("delete")) {
-
         for (int i = 1; i < memoAdapter.getCount(); i++) {
-
           Memos getMemo = memoAdapter.getItem(i);
-
-            if (getMemo.get_id() == memos.get_id()) {
-                memoAdapter.remove(memoAdapter.getItem(i));
-                memoAdapter.notifyDataSetChanged();
-            }
-          }
-      }
-    }
-  }
-}
+          if (getMemo.get_id() == memos.get_id()) {
+            memoAdapter.remove(memoAdapter.getItem(i));
+            memoAdapter.notifyDataSetChanged();
+            //memoAdapter.removeItem(i);
+            myDBHandler.deleteMemo(memos);
+            Log.d("action","delete");
+          }//end inner if
+        }//end outer delete if
+      }//end delete else if
+    }//end if result okay if
+  }//end onActivityResult
+}//end main

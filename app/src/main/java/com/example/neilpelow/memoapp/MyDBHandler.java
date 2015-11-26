@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
@@ -16,6 +17,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
   private static final String TABLE_MEMOS = "memos";
   private static final String COLUMN_ID = "_id";
   private static final String COLUMN_MEMOBODY = "memobody";
+  //private static final String COLUNM_ADDRESS = "address";
 
   SQLiteDatabase sqLiteDatabase;
 
@@ -53,48 +55,39 @@ public class MyDBHandler extends SQLiteOpenHelper {
     db.close();
   }
 
-
-  public Memos[] getMemo() {
+  public void updateMemo(Memos memos) {
     open();
-    String query = "SELECT memobody FROM Memo";
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(COLUMN_MEMOBODY, memos.get_memobody());
+
+    sqLiteDatabase.update(TABLE_MEMOS, contentValues, COLUMN_ID + " = " + memos.get_id(), null);
+
+  }
+
+  public void deleteMemo(Memos memos) {
+    open();
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(COLUMN_MEMOBODY, memos.get_memobody());
+
+    sqLiteDatabase.delete(TABLE_MEMOS, COLUMN_ID + " = " + memos.get_id(), null);
+    Log.d("NP", "Delete method runs");
+  }
+
+  public List<Memos> getAllMemos() {
+    Log.d("NP", "method runs");
+    open();
+    String query = "SELECT * FROM "+TABLE_MEMOS;
     Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-    ArrayList<String> memolist = new ArrayList<>();
+    List<Memos> memolist = new ArrayList<>();
     if (cursor.getCount() != 0) {
       cursor.moveToFirst();
       while (cursor.moveToNext()) {
-        memolist.add(cursor.getString(cursor.getColumnIndex("memobody")));
+        Memos memos = new Memos();
+        memos.set_id(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+        memos.set_memobody(cursor.getString(cursor.getColumnIndex(COLUMN_MEMOBODY)));
+        memolist.add(memos);
       }
     }
-    return memolist.toArray(new Memos[memolist.size()]);
+    return memolist;
   }
-
-  public void deleteMemo(String memobody) {
-
-    SQLiteDatabase db = getWritableDatabase();
-    db.execSQL("DELETE FROM " + TABLE_MEMOS + " WHERE " + COLUMN_MEMOBODY + "=\"" + memobody + "\";");
-  }
-
-  //print out the db as a string
-//    public String databasetoString() {
-//        String dbString = "";
-//        SQLiteDatabase db = getWritableDatabase();
-//        String query = "SELECT * FROM " + TABLE_MEMOS + " WHERE 1";
-//
-//        //cursor point to a location in results
-//        Cursor c = db.rawQuery(query, null);
-//        //Move to the first row in results
-//        c.moveToFirst();
-//        c.close();
-//
-//        while(!c.isAfterLast()) {
-//            if(c.getString(c.getColumnIndex("memobody")) != null) {
-//                dbString += c.getString(c.getColumnIndex("memobody"));
-//                dbString += "\n";
-//            }
-//        }
-//        db.close();
-//        return dbString;
-//
-//    }
-
 }//end MyDBHandler
