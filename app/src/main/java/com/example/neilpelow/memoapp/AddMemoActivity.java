@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddMemoActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class AddMemoActivity extends AppCompatActivity {
   Button myLocationButton;
   Button myCameraButton;
   EditText MyInputText;
+  TextView locationTextView;
   Memos newMemo;
 
   private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -31,11 +33,17 @@ public class AddMemoActivity extends AppCompatActivity {
     setContentView(R.layout.activity_add_memo);
     Log.w("AddMemoActivity", "Launching");
 
+    LocationLoc locationLoc = new LocationLoc(this);
+    String location = locationLoc.getLocationAddress();
+
+    Log.w("Location", "location");
+
     MyAddButton = (Button) findViewById(R.id.addbutton);
     MyCancelButton = (Button) findViewById(R.id.cancelbutton);
     myLocationButton = (Button) findViewById(R.id.myLocationButton);
     myCameraButton = (Button) findViewById(R.id.myCameraButton);
     MyInputText = (EditText) findViewById(R.id.memoInput);
+    locationTextView = (TextView) findViewById(R.id.locationTextView);
 
     //if MainActivity has sent data
 
@@ -53,11 +61,6 @@ public class AddMemoActivity extends AppCompatActivity {
       MyAddButton.setText("Add");
       MyCancelButton.setText("Cancel");
     }
-
-
-    //Log.d("AddMemoActivity", "Launching 2");
-    //inal int value = 1;
-    //Toast.makeText(AddMemoActivity.this, "ID: " + value, Toast.LENGTH_SHORT).show();
 
     MyAddButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -98,6 +101,9 @@ public class AddMemoActivity extends AppCompatActivity {
           intent.putExtra("memo", newMemo);
           intent.putExtra("action", "delete");
           setResult(RESULT_OK, intent);
+          finish();
+        }
+        if (MyCancelButton.getText().equals("Cancel")) {
           finish();
         }
       }

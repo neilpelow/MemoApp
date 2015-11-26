@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     memoListView.setAdapter(memoAdapter);
     populateListView();
 
+    //populate Location Text
+
     memoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
           if (getMemo.get_id() == memos.get_id()) {
             memoAdapter.remove(memoAdapter.getItem(i));
             memoAdapter.notifyDataSetChanged();
-            //memoAdapter.removeItem(i);
             myDBHandler.deleteMemo(memos);
             Log.d("action","delete");
           }//end inner if

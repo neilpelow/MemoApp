@@ -17,7 +17,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
   private static final String TABLE_MEMOS = "memos";
   private static final String COLUMN_ID = "_id";
   private static final String COLUMN_MEMOBODY = "memobody";
-  //private static final String COLUNM_ADDRESS = "address";
+  private static final String COLUMN_ADDRESS = "address";
 
   SQLiteDatabase sqLiteDatabase;
 
@@ -32,10 +32,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
   @Override
   public void onCreate(SQLiteDatabase db) {
     sqLiteDatabase = db;
-    String query = "CREATE TABLE " + TABLE_MEMOS + "(" +
-        COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-        COLUMN_MEMOBODY + " TEXT" + //text for now
-        ");";
+    String query = "CREATE TABLE memos (_id INTEGER PRIMARY KEY AUTOINCREMENT, memobody TEXT, address TEXT);";
     db.execSQL(query);
   }
 
@@ -47,11 +44,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
   public void addMemo(Memos memos) {
     ContentValues values = new ContentValues();
     if (memos == null) {
-      Log.d("SF", "memo is fucking null");
+      Log.d("SF", "memo null");
     }
     values.put(COLUMN_MEMOBODY, memos.get_memobody());
     SQLiteDatabase db = getWritableDatabase();
     db.insert(TABLE_MEMOS, null, values);
+
     db.close();
   }
 
