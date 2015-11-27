@@ -43,20 +43,18 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
   public void addMemo(Memos memos) {
     ContentValues values = new ContentValues();
-    if (memos == null) {
-      Log.d("SF", "memo null");
-    }
     values.put(COLUMN_MEMOBODY, memos.get_memobody());
-    SQLiteDatabase db = getWritableDatabase();
-    db.insert(TABLE_MEMOS, null, values);
-
-    db.close();
+    Log.w("Address",memos.getAddress());
+    values.put(COLUMN_ADDRESS, memos.getAddress());
+    sqLiteDatabase.insert(TABLE_MEMOS, null, values);
+    sqLiteDatabase.close();
   }
 
   public void updateMemo(Memos memos) {
     open();
     ContentValues contentValues = new ContentValues();
     contentValues.put(COLUMN_MEMOBODY, memos.get_memobody());
+    //contentValues.put(COLUMN_ADDRESS, memos.getAddress());
 
     sqLiteDatabase.update(TABLE_MEMOS, contentValues, COLUMN_ID + " = " + memos.get_id(), null);
 
@@ -83,7 +81,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         Memos memos = new Memos();
         memos.set_id(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
         memos.set_memobody(cursor.getString(cursor.getColumnIndex(COLUMN_MEMOBODY)));
+        memos.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)));
         memolist.add(memos);
+
+        //Log.w("Address",cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)));
       }
     }
     return memolist;

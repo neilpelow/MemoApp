@@ -33,8 +33,7 @@ public class AddMemoActivity extends AppCompatActivity {
     setContentView(R.layout.activity_add_memo);
     Log.w("AddMemoActivity", "Launching");
 
-    LocationLoc locationLoc = new LocationLoc(this);
-    String location = locationLoc.getLocationAddress();
+
 
     Log.w("Location", "location");
 
@@ -52,11 +51,16 @@ public class AddMemoActivity extends AppCompatActivity {
     if (intent.getStringExtra("action").equals("update")) {
       newMemo = intent.getParcelableExtra("memoID");
       MyInputText.setText(newMemo.get_memobody());
+      locationTextView.setText(newMemo.getAddress());
       //reset buttons to reflect change in memo state; update and delete.
       MyAddButton.setText("Update");
       MyCancelButton.setText("Delete");
 
     } else {
+
+      LocationLoc locationLoc = new LocationLoc(this);
+      String location = locationLoc.getLocationAddress();
+      locationTextView.setText(location);
       value = intent.getIntExtra("newID", 0);
       MyAddButton.setText("Add");
       MyCancelButton.setText("Cancel");
@@ -76,6 +80,7 @@ public class AddMemoActivity extends AppCompatActivity {
 
             Memos sendMemo = new Memos();
             sendMemo.set_memobody(MyInputText.getText().toString());
+            sendMemo.setAddress(locationTextView.getText().toString());
             sendMemo.set_id(value);
             Intent intentAdd = new Intent();
             intentAdd.putExtra("memo", sendMemo);

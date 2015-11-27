@@ -56,7 +56,7 @@ public class LocationLoc implements LocationListener {
       getAddress(location.getLongitude(), location.getLatitude());
 
     } catch (SecurityException e) {
-      Log.d("MyLocation :", "u dun fkd up", e);
+      Log.d("MyLocation :", "Things aren't going well. Keep calm and carry on!", e);
     }
   }
 
@@ -91,12 +91,8 @@ public class LocationLoc implements LocationListener {
           String addressLine = addresses.get(0).getAddressLine(0);
           String city = addresses.get(0).getLocality();
           String country = addresses.get(0).getCountryName();
-//          Intent intent = new Intent(LocationLoc.this, AddMemoActivity.class);
-//          intent.putExtra("addressLine", addressLine);
-//          intent.putExtra("cityMessage", city);
-//          intent.putExtra("country", country);
 
-          locationAddress = addressLine;
+          locationAddress = addressLine+","+city+","+country;
 
         } catch (IndexOutOfBoundsException e) {
           e.printStackTrace();

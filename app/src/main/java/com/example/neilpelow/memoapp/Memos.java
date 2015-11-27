@@ -7,6 +7,8 @@ public class Memos implements Parcelable {
 
     private int _id;
     private String _memobody;
+    private String address;
+    private String imagePath;
 
     public Memos() {
     }
@@ -28,6 +30,23 @@ public class Memos implements Parcelable {
         this._memobody = _memobody;
     }
 
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -37,14 +56,18 @@ public class Memos implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this._id);
         dest.writeString(this._memobody);
+        dest.writeString(this.address);
+        dest.writeString(this.imagePath);
     }
 
     protected Memos(Parcel in) {
         this._id = in.readInt();
         this._memobody = in.readString();
+        this.address = in.readString();
+        this.imagePath = in.readString();
     }
 
-    public static final Parcelable.Creator<Memos> CREATOR = new Parcelable.Creator<Memos>() {
+    public static final Creator<Memos> CREATOR = new Creator<Memos>() {
         public Memos createFromParcel(Parcel source) {
             return new Memos(source);
         }

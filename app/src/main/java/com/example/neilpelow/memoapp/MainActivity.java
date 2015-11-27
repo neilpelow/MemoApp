@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
     myDBHandler = new MyDBHandler(MainActivity.this);
+    myDBHandler.open();
 
     Memos newMemo = new Memos();
     newMemo.set_memobody("Add Memo");
