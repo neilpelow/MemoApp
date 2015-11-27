@@ -18,6 +18,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
   private static final String COLUMN_ID = "_id";
   private static final String COLUMN_MEMOBODY = "memobody";
   private static final String COLUMN_ADDRESS = "address";
+  private static final String COLUMN_IMAGE = "image";
 
   SQLiteDatabase sqLiteDatabase;
 
@@ -32,7 +33,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
   @Override
   public void onCreate(SQLiteDatabase db) {
     sqLiteDatabase = db;
-    String query = "CREATE TABLE memos (_id INTEGER PRIMARY KEY AUTOINCREMENT, memobody TEXT, address TEXT);";
+    String query = "CREATE TABLE memos (_id INTEGER PRIMARY KEY AUTOINCREMENT, memobody TEXT, address TEXT, image TEXT);";
     db.execSQL(query);
   }
 
@@ -44,8 +45,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
   public void addMemo(Memos memos) {
     ContentValues values = new ContentValues();
     values.put(COLUMN_MEMOBODY, memos.get_memobody());
-    Log.w("Address",memos.getAddress());
     values.put(COLUMN_ADDRESS, memos.getAddress());
+    values.put(COLUMN_IMAGE, memos.getImagePath());
     sqLiteDatabase.insert(TABLE_MEMOS, null, values);
     sqLiteDatabase.close();
   }
@@ -54,6 +55,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     open();
     ContentValues contentValues = new ContentValues();
     contentValues.put(COLUMN_MEMOBODY, memos.get_memobody());
+    contentValues.put(COLUMN_IMAGE, memos.getImagePath());
     //contentValues.put(COLUMN_ADDRESS, memos.getAddress());
 
     sqLiteDatabase.update(TABLE_MEMOS, contentValues, COLUMN_ID + " = " + memos.get_id(), null);
@@ -82,6 +84,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         memos.set_id(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
         memos.set_memobody(cursor.getString(cursor.getColumnIndex(COLUMN_MEMOBODY)));
         memos.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)));
+        memos.setImagePath(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE)));
         memolist.add(memos);
 
         //Log.w("Address",cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)));
